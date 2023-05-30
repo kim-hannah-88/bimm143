@@ -1,0 +1,8 @@
+---
+title: "Class 05: Data Visualization with GGPLOT"
+author: "Hannah Kim"
+date:2023-04-19
+format: html
+---
+Some example text
+

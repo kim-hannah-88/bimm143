@@ -1,0 +1,156 @@
+---
+title: "Class07"
+author: Hannah Kim
+date: 04-26-23
+format: pdf
+---
+
+Importing Data
+
+```{r}
+url <- "https://tinyurl.com/UK-foods"
+x <- read.csv(url)
+```
+
+## **Q1**. How many rows and columns are in your new data frame named `x`? What R functions could you use to answer this questions?
+
+```{r}
+## Complete the following code to find out how many rows and columns are in x?
+dim(x)
+```
+
+There are 17 rows and 5 columns in x.
+
+# Checking Your Data
+
+```{r}
+## Preview the first 6 rows
+head(x)
+```
+
+The row names are incorrectly placed in the first column of our 'x' data frame.
+
+```{r}
+# Note how the minus indexing works
+rownames(x) <- x[,1]
+x <- x[,-1]
+head(x)
+
+#or We could solve this problem like this
+x <- read.csv(url, row.names=1)
+head(x)
+
+```
+
+We can check the dimensions again.
+
+```{r}
+dim(x)
+```
+
+## **Q2.** Which approach to solving the 'row-names problem' mentioned above do you prefer and why? Is one approach more robust than another under certain circumstances?
+
+Now we can generate some basic visualizations
+
+```{r}
+barplot(as.matrix(x), col = rainbow(nrow(x)))
+
+```
+
+# **Q3**: Changing what optional argument in the above **barplot()** function results in the following plot?
+
+Changing the beside = FALSE
+
+```{r}
+barplot(as.matrix(x), col = rainbow(nrow(x)), beside = FALSE)
+
+```
+
+Let's apply PCA (principal components analysis). For that we need to use the command 'prcomp(x)'
+
+```{r}
+pca <- prcomp(t(x))
+summary(pca)
+
+```
+
+```{r}
+attributes(pca)
+```
+
+We can explore the pca\$x data frame
+
+```{r}
+pca$x
+```
+
+```{r}
+plot(x=pca$x[,1], y = pca$x[,2])
+text (x=pca$x[,1], y = pca$x[,2], colnames(x))
+```
+
+```{r}
+plot(x=pca$x[,1], y = pca$x[,2])
+text (x=pca$x[,1], y = pca$x[,2], colnames(x))
+colnames(x)
+```
+
+## PCA of a RNA-Seq Dataset
+
+First step as always is loading the data
+
+```{r}
+url2 <- "https://tinyurl.com/expression-CSV"
+rna.data <- read.csv(url2, row.names=1)
+head(rna.data)
+```
+
+How many genes and samples in this data set?
+
+```{r}
+dim(rna.data)
+```
+
+There are 100 genes and 10 samples for each.
+
+Let's apply PCA
+
+```{r}
+pca_rna - pcramp(t(rna.data))
+```
+
+```{r}
+cols_sampes <- c(rep('blue',5), rep('red',5))
+col = cols_sampes)
+```
+
+An example when we select the wrong number
+
+# Example of hierarchical clustering
+
+Let's Use the same data as before, which we stored in 'x'. We will use the 'hclust()' function.
+
+```{r}
+dist(x)
+clustering <- hclust(dist(x))
+clustering 
+```
+
+To get our results(i.e. membership vector) we need to "cut" the tree. The function for doing that is cutree()
+
+```{r}
+subgroups <-cutree(clustering, h = 10)
+subgroups
+```
+
+Plotting this...
+
+```{r}
+plot (x, col = subgroups)
+```
+
+You can also "cut" your tree with the number of clusters you want:
+
+```{r}
+cutree(clustering, k = 2)
+```

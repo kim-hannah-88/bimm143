@@ -1,0 +1,165 @@
+---
+title: "Week04 Lab: R Language Basics"
+author: Hannah Kim
+date: 04-25-23
+format: pdf 
+---
+
+# Simple Calculations
+
+Let's practice basic arithmetic functions and use R as a calculator:
+
+```{r}
+5+3
+5-3
+5*3
+5/3
+
+```
+
+# Saving Your Answers
+
+Assigning values to an object.
+
+```{r}
+# Form for creating objects: objectName <- value  
+x <- 3 * 4  
+x
+```
+
+```{r}
+this_is_a_really_long_name <- 2.5  
+r_rocks <- 2 ^ 3  
+this_is_a_really_long_name
+#calling rrocks would not work because of a type
+```
+
+# Calling functions
+
+R has many basic functions that are built in such as seq to create a sequences of numbers.
+
+```{r}
+#functionName(arg1 = val1, arg2 = val2, and so on)
+seq(1,10)  
+
+
+```
+
+You can also create sequences with different step sizes.
+
+```{r}
+seq(1,10, by=2)  
+
+#not all functios require an argument 
+example(seq)
+date()
+
+```
+
+# Getting Help in R
+
+There is a built in help function to read the descriptions of a function that you know the name of and want more information about
+
+```{r}
+
+help(log)
+?log
+```
+
+For example if we want to know what cross tabulate does:
+
+```{r}
+help.search("cross tabulate")
+??"cross tabulate"
+```
+
+# Vectors, Vectoring, and Indexing
+
+The length function returns the length of a vector. Unlike other coding languages there is no scalar type and instead values like 'word' or 3.1 are stored as a vector of length 1.
+
+```{r}
+length(3.1) 
+
+```
+
+To create longer vectors, we combine values with the function c():
+
+```{r}
+x <- c(56, 95.3, 0.4)
+x
+#or
+y <- c(3.2, 1.1, 0.2)
+y
+```
+
+## Vectorization
+
+Vectorization lets us loop over the elements in a vector with writing an explicit loop:
+
+```{r}
+x+y
+```
+
+```{r}
+x-y
+
+```
+
+```{r}
+x/y
+
+```
+
+In addition to operators like `+` and `*`, many of R's math functions (e.g., `sqrt()`, `round()`, `log()`, etc.) are all vectorized:
+
+```{r}
+sqrt(x)
+
+```
+
+```{r}
+round(sqrt(x), 3)
+
+```
+
+```{r}
+log(x)/2 + 1 # note how we can combined vectorized operations
+
+```
+
+## Vector Indexing
+
+We can use indexing to get a specific element in the vector to retrieve.
+
+```{r}
+x <- c(56, 95.3, 0.4)
+x[2]
+```
+
+The index positions starts at 1. R's vectors are 1-indexed.
+
+```{r}
+x[1]
+
+```
+
+If you try to retrieve an element that does not exist in the vector it will return N/A
+
+```{r}
+x[4]
+```
+
+We can also change elements by combining indexing and assignment:
+
+```{r}
+x[3] <- 0.5
+x
+```
+
+# Version of R used
+
+```{r}
+sessionInfo()
+
+
+```

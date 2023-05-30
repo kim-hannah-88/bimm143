@@ -1,0 +1,37 @@
+---
+title: "HW06"
+author: Hannah Kim 
+date: 04-30-23
+format: pdf
+---
+
+# Q6. How would you generalize the original code above to work with any set of input protein structures?
+
+To generalize the original code to work with any protein structures as input, I wrote a function that takes a list of pdb file names as input. It then read in each pbd file, trims it to chain A, and then plots it.
+
+```{r}
+#install.packages("bio3d")
+library(bio3d)
+
+# The input is a list of pdb file names. The function plot_B_factors then reads in each 
+#file, trims it to chain A and then plots the B factors using 'plotB3' function. 
+plot_B_factors <- function(file_list) {
+  for (file in file_list) {
+    # read in pdb file and trim to chain A
+    s <- read.pdb(file)
+    s.chainA <- trim.pdb(s, chain="A", elety="CA")
+    
+    # plot B-factors
+    s.b <- s.chainA$atom$b
+    plotb3(s.b, sse=s.chainA, typ="l", ylab="Bfactor")
+  }
+}
+
+#A list for the provided file names.
+file_list <- c("4AKE", "1AKE", "1E4Y")
+
+# Applied the plot_b_factors function. By providing the list of files names rather 
+#than single files, the function can be applied to any protein structures without 
+#editing the code each time. 
+plot_B_factors(file_list)
+```
