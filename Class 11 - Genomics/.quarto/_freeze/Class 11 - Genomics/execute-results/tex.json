@@ -1,0 +1,16 @@
+{
+  "hash": "71ad1c4e70b6836a3187c6f50eaa7bde",
+  "result": {
+    "markdown": "---\ntitle: \"Class 11 - Population Analysis\"\nauthor: Hannah Kim \ndate: 05-10-2023\nformat: pdf\n---\n\n\n## Q13: Read this file into R and determine the sample size for each genotype and their corresponding median expression levels for each of these genotypes.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Load the required libraries\nlibrary(ggplot2)\n\n# Read the data from the file\ndata <- read.table(\"rs8067378_ENSG00000172057.6.txt\", header = TRUE)\n\n# Determine sample size for each genotype\nsample_sizes <- table(data$Genotype)\n\n# Calculate median expression levels for each genotype\nmedian_expression <- tapply(data$exp, data$geno, median)\n\n# Print sample sizes\ncat(\"Sample Sizes:\\n\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nSample Sizes:\n```\n:::\n\n```{.r .cell-code}\nprint(sample_sizes)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n< table of extent 0 >\n```\n:::\n\n```{.r .cell-code}\n# Print median expression levels\ncat(\"\\nMedian Expression Levels:\\n\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n\nMedian Expression Levels:\n```\n:::\n\n```{.r .cell-code}\nprint(median_expression)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n     A/A      A/G      G/G \n31.24847 25.06486 20.07363 \n```\n:::\n:::\n\n\n## \nQ14: Generate a boxplot with a box per genotype, what could you infer from the relative expression value between A/A and G/G displayed in this plot? Does the SNP effect the expression of ORMDL3?\n\nThere is some overlap between the expression values of the A/A and G/G genotypes, as seen by the whiskers of the boxplot. This suggests that there are individuals with the A/A genotype who exhibit expression levels similar to or even higher than some individuals with the G/G genotype. It can be inferred that the SNP does affect the expression of ORMDL3. The G/G genotype is associated with higher median expression levels and greater variability in expression compared to the A/A genotype.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Generate a boxplot\n# Generate a boxplot\nboxplot(exp ~ geno, data = data,\n        xlab = \"Genotype\",\n        ylab = \"Expression\",\n        main = \"Expression of ORMDL3 by Genotype\")\n```\n\n::: {.cell-output-display}\n![](Class-11---Genomics_files/figure-pdf/unnamed-chunk-2-1.pdf){fig-pos='H'}\n:::\n:::\n",
+    "supporting": [
+      "Class-11---Genomics_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": null,
+    "postProcess": false
+  }
+}

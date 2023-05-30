@@ -1,0 +1,148 @@
+---
+title: "Class 12: Transcriptomics and the analysis of RNA-Seq data"
+author: Hannah Kim 
+date: 05-12-23
+format: pdf
+---
+
+# Import countData and colData
+
+```{r}
+counts <- read.csv("airway_scaledcounts.csv", row.names=1)
+metadata <-  read.csv("airway_metadata.csv")
+```
+
+```{r}
+head(counts)
+head(metadata)
+
+```
+
+**Q1.** How many genes are in this dataset?
+
+38694
+
+**Q2.** How many 'control' cell lines do we have?
+
+4
+
+# Toy differential gene expression
+
+```{r}
+#Find the sample ids for control samples
+control <- metadata[metadata[,"dex"]=="control",]
+control.counts <- counts[ ,control$id]
+control.mean <- rowSums( control.counts )/4 
+head(control.mean)
+```
+
+```{r}
+#Use these ids to select the columns I want in another table
+metadata[metadata[,"dex"] == "control",]
+
+control$id
+```
+
+```{r}
+control.counts <- counts[ ,control$id]
+control.mean <- rowSums( control.counts )/4 
+head(control.mean)
+```
+
+**Q3.** How would you make the above code in either approach more robust?
+
+Create a function that takes the "treated" or "control" data to calculate the mean so that the code is more simplified and reusable.
+
+**Q4.** Follow the same procedure for the `treated` samples (i.e. calculate the mean per gene across drug treated samples and assign to a labeled vector called `treated.mean`)
+
+```{r}
+treated <- metadata[metadata[,"dex"]=="treated",]
+treated.counts <- counts[ ,treated$id]
+treated.mean <- rowSums( treated.counts )/4 
+head(treated.mean)
+
+```
+
+**Q5 (a).** Create a scatter plot showing the mean of the treated samples against the mean of the control samples. Your plot should look something like the following.
+
+```{r}
+meancounts <- data.frame(control.mean, treated.mean)
+colSums(meancounts)
+
+# Plot both means by plotting 
+plot(meancounts[,1],meancounts[,2], xlab="Control", ylab="Treated")
+
+```
+
+To calculate the log2 of the fold change between treated and control...
+
+```{r}
+meancounts$log2fc <- log2(meancounts$treated.mean/ meancounts$control.mean)
+```
+
+**Q7.** What is the purpose of the `arr.ind` argument in the **which()** function call above? Why would we then take the first column of the output and need to call the **unique()** function?
+
+```{r}
+zero.vals<- which(meancounts[, 1:2]==0, arr.ind =TRUE)
+to.rm<- unique(zero.vals[,1])
+mycounts<- meancounts[-to.rm]
+
+```
+
+The arr.ind is important because it returns the indexes of the values that are TRUE. We take the first column from this and return the non repeating or unique indexes.
+
+**Q8.** Using the `up.ind` vector above can you determine how many up regulated genes we have at the greater than 2 fc level?
+
+250
+
+**Q9.** Using the `down.ind` vector above can you determine how many down regulated genes we have at the greater than 2 fc level?
+
+367
+
+**Q10.** Do you trust these results? Why or why not?
+
+There is lots of documentation for existing functions such as the DESeq2 class that we can use to run statistical analysis/functions rather than doing it by hand and getting human errors.
+
+# DESeq2 Analysis
+
+First step, loading the library
+
+```{r}
+library('DESeq2')
+```
+
+```{r}
+# Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2 Genome Biology 15(12):550 (2014)
+citation('DESeq2')
+```
+
+Let's generate the specific object that DESeq2 needs:
+
+```{r}
+#Id needs to be Col Names. We use DEX to define the subgroups
+dds <- DESeqDataSetFromMatrix(countData = counts, 
+                              colData = metadata, 
+                              design= ~dex)
+dds
+
+```
+
+```{r}
+dds <- DESeq(dds)
+```
+
+```{r}
+#Show us the results of the statistical analysis 
+res <- results(dds)
+res
+```
+
+```{r}
+summary(res)
+```
+
+```{r}
+#Change the alpha from default of 0.1 to 0.05
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
