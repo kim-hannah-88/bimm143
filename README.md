@@ -24,4 +24,4 @@ Class 17: [Vaccination rate mini-project](https://github.com/kim-hannah-88/bimm1
 
 Class 19: [Pertussis resurgence mini-project](https://github.com/kim-hannah-88/bimm143/blob/main/Class17/Mini_Project_17.html)
 
-Final Assignment: [Find-A-Gene Project]()
+Final Assignment: [Find-A-Gene Project](https://github.com/kim-hannah-88/bimm143/blob/main/Find%20A%20gene%20Project.pdf)
